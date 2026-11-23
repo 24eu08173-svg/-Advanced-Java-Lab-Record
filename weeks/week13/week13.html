@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 13 - Spring Data JPA Query Methods</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f3f6;
+            color: #222;
+        }
+
+        /* HEADER - WEEK 4 STYLE */
+        .header {
+            background: #f4f9ff;
+            color: #123b63;
+            padding: 22px 20px;
+            text-align: center;
+            border: 1px solid #dceafa;
+            border-radius: 12px;
+            margin: 1px;
+        }
+
+        .header h1 {
+            font-size: 27px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #123b63;
+        }
+
+        .header p {
+            font-size: 15px;
+            color: #4776a8;
+            margin-top: 5px;
+        }
+
+        .student-info {
+            background: white;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 18px 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            line-height: 1.8;
+        }
+
+        .student-info strong {
+            color: #172554;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 25px 10px;
+            color: #172554;
+            font-size: 23px;
+        }
+
+        .pages-container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 10px 18px 40px;
+        }
+
+        .page {
+            background: white;
+            margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+        }
+
+        .page h3 {
+            background: #dbeafe;
+            color: #172554;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .page img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .footer {
+            background: #172554;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 21px;
+            }
+
+            .student-info {
+                margin: 12px;
+                padding: 15px;
+            }
+
+            .pages-container {
+                padding: 8px;
+            }
+
+            .page {
+                padding: 7px;
+                margin-bottom: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>ADVANCED JAVA PROGRAMMING LAB</h1>
+        <p>WEEK 13 – Spring Data JPA Query Methods</p>
+        <p>Derived Query Methods and Custom Native SQL Query</p>
+    </div>
+
+    <!-- ALL 10 PAGES -->
+    <div class="pages-container">
+
+        <div class="page">
+            <img src="WEEK 13_page-0001.jpg"
+                 alt="Week 13 Lab Record Page 1">
+        </div>
+
+        <div class="page">
+            <img src="WEEK 13_page-0002.jpg"
+                 alt="Week 13 Lab Record Page 2">
+        </div>
+
+        <div class="page">
+            <img src="WEEK 13_page-0003.jpg"
+                 alt="Week 13 Lab Record Page 3">
+        </div>
+
+        <div class="page">
+            <img src="WEEK 13_page-0004.jpg"
+                 alt="Week 13 Lab Record Page 4">
+        </div>
+
+        <div class="page">
+            <img src="WEEK 13_page-0005.jpg"
+                 alt="Week 13 Lab Record Page 5">
+        </div>
+
+        <div class="page">
+            <img src="WEEK 13_page-0006.jpg"
+                 alt="Week 13 Lab Record Page 6">
+        </div>
+
+        <div class="page">
+            <img src="WEEK 13_page-0007.jpg"
+                 alt="Week 13 Lab Record Page 7">
+        </div>
+
+        <div class="page">
+            <img src="WEEK 13_page-0008.jpg"
+                 alt="Week 13 Lab Record Page 8">
+        </div>
+
+        <div class="page">
+            <h3>Page 9 – Program Output</h3>
+            <img src="WEEK 13_page-0009.jpg"
+                 alt="Week 13 Lab Record Page 9">
+        </div>
+
+        <div class="page">
+            <h3>Page 10 – Final Output and Result</h3>
+            <img src="WEEK 13_page-0010.jpg"
+                 alt="Week 13 Lab Record Page 10">
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>Advanced Java Programming Lab | Week 13</p>
+        <p>Student ID: 24EU08173</p>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Week 11 - Advanced Java Programming Lab</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #263445;
+    padding: 25px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+}
+
+.header {
+    text-align: center;
+    border-bottom: 2px solid #10b981;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    color: #087f5b;
+    font-size: 27px;
+}
+
+.header p {
+    color: #64748b;
+    margin-top: 8px;
+}
+
+.student {
+    background: #eff6ff;
+    padding: 14px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2563eb;
+    font-weight: bold;
+}
+
+.section {
+    margin-bottom: 25px;
+}
+
+.section h2 {
+    color: #087f5b;
+    font-size: 21px;
+    margin-bottom: 12px;
+}
+
+.screenshot {
+    margin: 25px 0;
+    padding: 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.screenshot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    cursor: zoom-in;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    border-top: 1px solid #e2e8f0;
+    color: #64748b;
+}
+
+/* IMAGE VIEWER */
+
+#imageViewer {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#imageViewer img {
+    max-width: 95%;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+#imageViewer span {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+}
+
+@media(max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>ADVANCED JAVA PROGRAMMING LAB</h1>
+        <p>WEEK 11 - Laboratory Record</p>
+    </div>
+
+
+    <div id="screenshots"></div>
+
+    <div class="footer">
+        <p>Advanced Java Programming Laboratory</p>
+        <p>Student ID: 24EU08173</p>
+        <p>End of Week 11 Laboratory Record</p>
+    </div>
+
+</div>
+
+<!-- IMAGE VIEWER -->
+
+<div id="imageViewer" onclick="closeImage()">
+    <span>&times;</span>
+    <img id="largeImage" src="" alt="Expanded screenshot">
+</div>
+
+<script>
+
+const screenshotContainer =
+    document.getElementById("screenshots");
+
+const imageFiles = [
+    "week-11java_1.jpg",
+    "week-11java_2.jpg",
+    "week-11java_3.jpg",
+    "week-11java_4.jpg"
+];
+
+imageFiles.forEach(function(imageName) {
+
+    const card = document.createElement("div");
+
+    card.className = "screenshot";
+
+    card.innerHTML = `
+        <img
+            src="${imageName}"
+            alt="Week 11 Laboratory Work"
+            loading="lazy"
+            onclick="openImage(this.src)"
+            onerror="this.parentElement.style.display='none'"
+        >
+    `;
+
+    screenshotContainer.appendChild(card);
+
+});
+
+function openImage(src) {
+
+    document.getElementById("largeImage").src = src;
+
+    document.getElementById("imageViewer").style.display = "flex";
+
+}
+
+function closeImage() {
+
+    document.getElementById("imageViewer").style.display = "none";
+
+}
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "Escape") {
+        closeImage();
+    }
+
+});
+
+</script>
+
+</body>
+</html>

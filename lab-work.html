@@ -1,0 +1,749 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Java Programming - Lab Work</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        /* RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: "Inter", sans-serif;
+            overflow: hidden;
+            background: #f7fcf9;
+        }
+
+        /* BACKGROUND */
+        #three-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-shapes {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+        }
+
+        .shape-1 {
+            width: 600px;
+            height: 600px;
+            background: #e0f7f1;
+            top: -15%;
+            right: -10%;
+            opacity: 0.6;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: #c8eee3;
+            bottom: -10%;
+            left: -10%;
+            opacity: 0.6;
+        }
+
+        /* MAIN LAYOUT */
+        .app-container {
+            position: relative;
+            z-index: 10;
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: 160px 1fr;
+            grid-template-columns: 280px 1fr;
+            gap: 12px;
+            padding: 12px;
+        }
+
+        /* GLASS FRAMES */
+        .frame {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .frame-header {
+            grid-row: 1 / 2;
+            grid-column: 1 / 3;
+            padding: 10px 20px;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: row;
+        }
+
+        .frame-sidebar {
+            grid-row: 2 / 3;
+            grid-column: 1 / 2;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .frame-main {
+            grid-row: 2 / 3;
+            grid-column: 2 / 3;
+            background: #ffffff;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 3px solid #10b981;
+            object-fit: cover;
+        }
+
+        .header-text h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .header-text .sub {
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .header-text .highlight {
+            color: #10b981;
+        }
+
+        .header-right {
+            font-size: 14px;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        /* SIDEBAR */
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 15px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 12px;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .menu-link {
+            display: block;
+            padding: 10px 16px;
+            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .menu-link:hover {
+            background: #34d399;
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+
+        .menu-link.active {
+            background: #34d399;
+            color: #ffffff;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 15px 0;
+            width: 100%;
+        }
+
+        /* HOME CONTENT */
+        #homeContent {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .main-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 15px;
+        }
+
+        .main-desc {
+            color: #6b7280;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        /* WEEK IFRAME */
+        #weekIframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: none;
+            background: #ffffff;
+        }
+
+        #weekIframe.active {
+            display: block;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 800px) {
+            html, body {
+                overflow: auto;
+            }
+
+            .app-container {
+                grid-template-rows: auto 250px 1fr;
+                grid-template-columns: 1fr;
+                width: 100%;
+                height: auto;
+                min-height: 100vh;
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .frame-header {
+                grid-row: 1 / 2;
+                grid-column: 1 / 2;
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .frame-sidebar {
+                grid-row: 2 / 3;
+                grid-column: 1 / 2;
+            }
+
+            .frame-main {
+                grid-row: 3 / 4;
+                grid-column: 1 / 2;
+                min-height: 60vh;
+            }
+
+            .profile-img {
+                width: 60px;
+                height: 60px;
+            }
+
+            .header-left {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-right {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+
+    <canvas id="three-bg"></canvas>
+
+    <div class="app-container">
+
+        <!-- HEADER -->
+        <div class="frame frame-header">
+
+            <div class="header-left">
+
+                <img src="profile.jpg" class="profile-img" alt="Profile">
+
+                <div class="header-text">
+
+                    <h2>
+                        Nakka Sailendra
+                        <span class="highlight">Prasad</span>
+                    </h2>
+
+                    <div class="sub">
+                        Student ID: 24EU08173
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="header-right">
+                Advanced Java Lab
+            </div>
+
+        </div>
+
+
+        <!-- SIDEBAR -->
+        <div class="frame frame-sidebar">
+
+            <div class="sidebar-title">
+                Menu
+            </div>
+
+            <span class="sidebar-subtitle">
+                📂 Lab Assignments
+            </span>
+
+            <!-- WEEK 1 -->
+            <a href="weeks/week1/week1.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 1: Introduction
+            </a>
+
+            <!-- WEEK 2 -->
+            <a href="weeks/week2/week2.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 2: JDK Installation
+            </a>
+
+            <!-- WEEK 3 -->
+            <a href="weeks/week3/week3.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 3: MS Access
+            </a>
+
+            <!-- WEEK 4 -->
+            <a href="weeks/week4/week4.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 4: MySQL
+            </a>
+
+            <!-- WEEK 5 -->
+            <a href="weeks/week5/week5.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 5: NetBeans
+            </a>
+
+            <!-- WEEK 6 -->
+            <a href="weeks/week6/week6.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 6: JDBC CRUD
+            </a>
+
+            <!-- WEEK 7 -->
+            <a href="weeks/week7/week7.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 7: Servlets
+            </a>
+
+            <!-- WEEK 8 -->
+            <a href="weeks/week8/week8.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 8: Java Servlets
+            </a>
+
+            <!-- WEEK 9 -->
+            <a href="weeks/week9/week9.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 9: JDBC and Advanced Java
+            </a>
+
+            <!-- WEEK 10 -->
+            <a href="weeks/week10/week10.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 10: Advanced Java
+            </a>
+
+            <!-- WEEK 11 -->
+            <a href="weeks/week11/week11.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 11: Advanced Java
+            </a>
+
+            <!-- WEEK 12 -->
+            <a href="weeks/week12/week12.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 12: Advanced Java
+            </a>
+
+            <!-- WEEK 13 -->
+            <a href="weeks/week13/week13.html"
+               target="weekIframe"
+               class="menu-link"
+               onclick="loadWeek(this)">
+                📄 Week 13: Advanced Java
+            </a>
+
+
+            <div class="divider"></div>
+
+
+            <!-- EXTERNAL LINKS -->
+            <span class="sidebar-subtitle">
+                🔗 External
+            </span>
+
+            <a href="https://www.google.com"
+               target="_blank"
+               class="menu-link">
+                🔍 Google
+            </a>
+
+            <a href="https://www.wikipedia.org"
+               target="_blank"
+               class="menu-link">
+                📚 Wikipedia
+            </a>
+
+            <a href="https://www.github.com"
+               target="_blank"
+               class="menu-link">
+                💻 GitHub
+            </a>
+
+
+            <div class="divider"></div>
+
+
+            <!-- HOME -->
+            <a href="#"
+               class="menu-link"
+               onclick="loadHome(); return false;">
+                🏠 Home
+            </a>
+
+            <!-- BACK TO WELCOME -->
+            <a href="index.html"
+               class="menu-link"
+               style="background:#34d399;color:white;font-weight:700;text-align:center;">
+                🏠 Back to Welcome Page
+            </a>
+
+        </div>
+
+
+        <!-- MAIN CONTENT -->
+        <div class="frame frame-main">
+
+            <div id="homeContent">
+
+                <div class="main-title">
+                    Welcome to the Lab
+                </div>
+
+                <div class="main-desc">
+                    Use the left sidebar menu to navigate to your weekly
+                    assignments, Google, Wikipedia, or GitHub.
+                    All 13 weeks are available here.
+                </div>
+
+            </div>
+
+            <iframe
+                id="weekIframe"
+                name="weekIframe"
+                title="Weekly Lab Assignment">
+            </iframe>
+
+        </div>
+
+    </div>
+
+
+    <!-- THREE.JS ANIMATION -->
+    <script>
+
+        // Check Three.js availability
+        if (typeof THREE !== "undefined") {
+
+            const canvas = document.getElementById("three-bg");
+
+            const scene = new THREE.Scene();
+
+            const camera = new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                1000
+            );
+
+            camera.position.set(0, 0, 8);
+
+            const renderer = new THREE.WebGLRenderer({
+                canvas: canvas,
+                antialias: true,
+                alpha: true
+            });
+
+            renderer.setSize(
+                window.innerWidth,
+                window.innerHeight
+            );
+
+            renderer.setPixelRatio(
+                Math.min(window.devicePixelRatio, 2)
+            );
+
+            renderer.setClearColor(0xccd9e0, 1);
+
+            const auroraGroup = new THREE.Group();
+
+            const waveCount = 35;
+
+            const geometry = new THREE.PlaneGeometry(
+                30, 8, 64, 64
+            );
+
+            const colors = [
+                0xa8e6cf,
+                0xdcedc1,
+                0xffd3b6,
+                0xffaaa5
+            ];
+
+            for (let i = 0; i < waveCount; i++) {
+
+                const color = colors[
+                    Math.floor(Math.random() * colors.length)
+                ];
+
+                const material = new THREE.MeshBasicMaterial({
+                    color: color,
+                    transparent: true,
+                    opacity: 0.1 + Math.random() * 0.1,
+                    side: THREE.DoubleSide,
+                    blending: THREE.AdditiveBlending
+                });
+
+                const wave = new THREE.Mesh(
+                    geometry,
+                    material
+                );
+
+                wave.position.x =
+                    (Math.random() - 0.5) * 15;
+
+                wave.position.y =
+                    (Math.random() - 0.5) * 10 - 2;
+
+                wave.position.z =
+                    (Math.random() - 0.5) * 10 - 5;
+
+                wave.rotation.x =
+                    Math.random() * Math.PI * 2;
+
+                wave.rotation.y =
+                    Math.random() * Math.PI * 2;
+
+                wave.rotation.z =
+                    Math.random() * Math.PI * 2;
+
+                wave.userData = {
+                    offset: Math.random() * 100,
+                    originalY: wave.position.y
+                };
+
+                auroraGroup.add(wave);
+
+            }
+
+            scene.add(auroraGroup);
+
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+
+            document.addEventListener("mousemove", (e) => {
+
+                targetX =
+                    (window.innerWidth / 2 - e.clientX) / 80;
+
+                targetY =
+                    (window.innerHeight / 2 - e.clientY) / 50;
+
+            });
+
+            const clock = new THREE.Clock();
+
+            function animate() {
+
+                requestAnimationFrame(animate);
+
+                const time = clock.getElapsedTime();
+
+                mouseX += (targetX - mouseX) * 0.05;
+
+                mouseY += (targetY - mouseY) * 0.05;
+
+                camera.position.x = mouseX * 0.5;
+
+                camera.position.y = mouseY * 0.3;
+
+                camera.lookAt(0, 0, -2);
+
+                auroraGroup.children.forEach((wave) => {
+
+                    wave.position.y =
+                        wave.userData.originalY +
+                        Math.sin(time + wave.userData.offset) * 0.15;
+
+                    wave.rotation.z += 0.001;
+
+                    wave.rotation.x += 0.001;
+
+                });
+
+                renderer.render(scene, camera);
+
+            }
+
+            animate();
+
+            window.addEventListener("resize", () => {
+
+                camera.aspect =
+                    window.innerWidth / window.innerHeight;
+
+                camera.updateProjectionMatrix();
+
+                renderer.setSize(
+                    window.innerWidth,
+                    window.innerHeight
+                );
+
+            });
+
+        }
+
+
+        // MENU NAVIGATION
+
+        function loadWeek(element) {
+
+            document.querySelectorAll(".menu-link")
+                .forEach(link => {
+                    link.classList.remove("active");
+                });
+
+            if (element) {
+                element.classList.add("active");
+            }
+
+            document.getElementById("homeContent")
+                .style.display = "none";
+
+            document.getElementById("weekIframe")
+                .classList.add("active");
+
+        }
+
+
+        // HOME NAVIGATION
+
+        function loadHome() {
+
+            document.querySelectorAll(".menu-link")
+                .forEach(link => {
+                    link.classList.remove("active");
+                });
+
+            document.getElementById("weekIframe")
+                .classList.remove("active");
+
+            document.getElementById("weekIframe").src = "about:blank";
+
+            document.getElementById("homeContent")
+                .style.display = "flex";
+
+        }
+
+    </script>
+
+</body>
+</html>
